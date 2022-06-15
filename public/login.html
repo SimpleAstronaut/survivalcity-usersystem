@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survival City User System - login</title>
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <script src="https://cdn.jdsj.site/jq.js"></script>
+    <script>
+        function login(){
+            const username = document.getElementById('username').value;
+            $.get('https://service-jzdhwuy1-1304083067.bj.apigw.tencentcs.com/release/getid', { username : username }, function(data, status){
+                data = JSON.parse(data);
+                const sta = data.status;
+                if(sta === 200){
+                    const user_id = data.USER_ID;
+                    const password = document.getElementById('password').value;
+                    $.get("https://service-2v0ldrgr-1304083067.bj.apigw.tencentcs.com/release/token/get", { id: user_id, password: password }, function (data, status) {
+                        const tokensta = data.status;
+                        if (tokensta === 200) {
+                            const token = data.token;
+                            if (getQueryString("target") == null) {
+                                document.cookie = 'user_id='+user_id;
+                                document.cookie = 'token='+token;
+                                window.location = window.location.origin;
+                                //const target = "https://user.jdsj.site/admin.html?user_id=" + user_id + "&token=" + token;
+                                //window.location.href = target;
+                            } else {
+                                window.location.href = getQueryString("target") + "?user_id=" + user_id + "&token=" + token;
+                            }
+                            //alert(token);
+                        } else {
+                            alert("密码错误!");
+                        }
+                    })
+                }
+            })
+        }
+
+        function getQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return decodeURIComponent(r[2]);
+            }
+            return null;
+        }
+
+        function signup(){
+            window.location = window.location.origin + '/signup';
+        }
+    </script>
+</head>
+<body class="mdui-theme-primary-teal mdui-drawer-body-left">
+<script>
+    let m = mdui.$;
+    let inst = new mdui.Drawer('#mode');
+    m('#toggle').on('click', function (){
+        inst.toggle();
+    })
+</script>
+<div class="mdui-drawer" id="mode">
+    <ul class="mdui-list">
+        <li class="mdui-list-item mdui-ripple">
+            <img src="./logo.png" alt="logo" width="100%">
+        </li>
+        <li class="mdui-divider"></li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons"> perm_identity</i>
+            <div class="mdui-list-item-content" onclick="window.location = window.location.origin+'/login'">注册登录</div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">library_books</i>
+            <div class="mdui-list-item-content">隐私政策</div>
+        </li>
+    </ul>
+</div>
+<header class="mdui-appbar">
+    <div class="mdui-toolbar mdui-color-theme">
+        <a class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#mode'}" id="toggle">
+            <i class="mdui-icon material-icons">menu</i>
+        </a>
+        <a href="javascript:" class="mdui-typo-headline">Survival City 用户系统</a>
+        <div class="mdui-toolbar-spacer"></div>
+        <a href="javascript:location.reload()" class="mdui-btn mdui-btn-icon">
+            <i class="mdui-icon material-icons">refresh</i>
+        </a>
+        <a class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#more'}">
+            <i class="mdui-icon material-icons">more_vert</i>
+        </a>
+        <ul class="mdui-menu" id="more">
+            <li class="mdui-menu-item">
+                <a href="https://wj.qq.com/s2/10387062/c68d/" class="mdui-ripple" target="_Blank">反馈</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="javascript:" mdui-dialog="{target: '#about'}">关于</a>
+            </li>
+        </ul>
+        <div class="mdui-dialog" id="about">
+            <div class="mdui-dialog-title">关于</div>
+            <div class="mdui-dialog-content">Survival City UserSystem<br>version: 2.0.1_beta_220614<hr>Powered by <a href="https://lmceric.top" target="_blank">SimpleAstronaut</a><br>2022-6-13</div>
+            <div class="mdui-dialog-actions">
+                <button class="mdui-btn mdui-ripple" mdui-dialog-close>确定</button>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="mdui-container">
+    <br>
+    <div class="mdui-row">
+        <div class="mdui-col-md-6 mdui-col-offset-md-3">
+            <div class="mdui-card">
+                <div class="mdui-card-primary">
+                    <div class="mdui-card-primary-title mdui-text-center">登录</div>
+                    <div class="mdui-card-primary-subtitle mdui-text-center">支持简单云账户登录</div>
+                </div>
+                <div class="mdui-card-content">
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">用户名</label>
+                        <!--suppress HtmlFormInputWithoutLabel -->
+                        <input class="mdui-textfield-input" type="text" id="username"/>
+                    </div>
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">密码</label>
+                        <!--suppress HtmlFormInputWithoutLabel -->
+                        <input class="mdui-textfield-input" type="password" id="password"/>
+                    </div>
+                    <br>
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-center" id="login" onclick="login()">登录</button>
+                    <br>
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-center" id="signup" onclick="signup()">注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

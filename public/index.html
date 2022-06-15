@@ -6,14 +6,48 @@
     <title>Survival City User System</title>
     <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
     <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <script src="https://cdn.jdsj.site/jq.js"></script>
 </head>
 <body class="mdui-theme-primary-teal mdui-drawer-body-left">
 <script>
-    let $ = mdui.$;
+    let m = mdui.$;
     let inst = new mdui.Drawer('#mode');
-    $('#toggle').on('click', function (){
+    m('#toggle').on('click', function (){
         inst.toggle();
     });
+</script>
+<script>
+    // noinspection SpellCheckingInspection
+    function getCookie(cname)
+    {
+        //get cookie function
+        //from www.runoob.com
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i=0; i<ca.length; i++)
+        {
+            let c = ca[i].trim();
+            if (c.indexOf(name)===0) return c.substring(name.length,c.length);
+        }
+        return "";
+    }
+    let user_id = getCookie('user_id');
+    let token = getCookie('token');
+    console.log('test');
+    if(user_id === '' || token === '') {
+        //console.log(window.location);
+        console.log('login false');
+        console.log(window.location.href+'user/get');
+        alert('您尚未登录');
+        window.location.pathname = '/login';
+    }
+
+    window.onload = function(){
+        console.log('a');
+        $.get(window.location.origin+'/user/info', function(data, status){
+            console.log(data);
+        })
+    }
 </script>
 <header class="mdui-appbar">
     <div class="mdui-toolbar mdui-color-theme">
@@ -42,6 +76,14 @@
             <div class="mdui-dialog-actions">
                 <button class="mdui-btn mdui-ripple" mdui-dialog-close>确定</button>
             </div>
+        </div>
+    </div>
+    <div class="mdui-dialog" id="login">
+        <div class="mdui-dialog-title">Are you sure?</div>
+        <div class="mdui-dialog-content">You'll lose all photos and media!</div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-cancel>cancel</button>
+            <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>erase</button>
         </div>
     </div>
 </header>

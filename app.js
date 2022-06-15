@@ -31,6 +31,16 @@ app.get('/get', function(req, res){
     console.log(req);
 })
 
+app.get('/login', function(req, res){
+    res.sendFile(__dirname+"/public"+"/login.html");
+    console.log("[INFO]["+Date()+"]["+req.ip.match(/\d+\.\d+\.\d+\.\d+/)+"]:Login page require")
+})
+
+app.get('/signup', function(req, res){
+    res.sendFile(__dirname+"/public"+"/signup.html")
+    console.log("[INFO]["+Date()+"]["+req.ip.match(/\d+\.\d+\.\d+\.\d+/)+"]:SignUp page require")
+})
+
 app.use(exStatic('./public'));
 
 app.listen(9000, function(){

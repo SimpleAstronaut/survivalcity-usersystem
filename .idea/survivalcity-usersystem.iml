@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="mdui" level="application" />
+    <orderEntry type="library" name="jq" level="application" />
   </component>
 </module>

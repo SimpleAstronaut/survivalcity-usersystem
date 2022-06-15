@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <script src="https://cdn.jdsj.site/jq.js"></script>
+    <title>Survival City User System - signup</title>
+    <script>
+        function signup(){
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const repassword = document.getElementById('repassword').value;
+
+            //密码是否相同
+            if(password === repassword){
+                $.get('https://service-jzdhwuy1-1304083067.bj.apigw.tencentcs.com/release/signup', { username : username, password : password, mail : email }, function(data, status){
+                    console.log(data);
+                })
+            }else{
+                alert('请确保密码相同！');
+            }
+        }
+    </script>
+</head>
+<body class="mdui-theme-primary-teal mdui-drawer-body-left">
+<script>
+    let m = mdui.$;
+    let inst = new mdui.Drawer('#mode');
+    m('#toggle').on('click', function (){
+        inst.toggle();
+    })
+</script>
+<div class="mdui-drawer" id="mode">
+    <ul class="mdui-list">
+        <li class="mdui-list-item mdui-ripple">
+            <img src="./logo.png" alt="logo" width="100%">
+        </li>
+        <li class="mdui-divider"></li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons"> perm_identity</i>
+            <div class="mdui-list-item-content" onclick="window.location = window.location.origin+'/login'">注册登录</div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">library_books</i>
+            <div class="mdui-list-item-content">隐私政策</div>
+        </li>
+    </ul>
+</div>
+<header class="mdui-appbar">
+    <div class="mdui-toolbar mdui-color-theme">
+        <a class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#mode'}" id="toggle">
+            <i class="mdui-icon material-icons">menu</i>
+        </a>
+        <a href="javascript:" class="mdui-typo-headline">Survival City 用户系统</a>
+        <div class="mdui-toolbar-spacer"></div>
+        <a href="javascript:location.reload()" class="mdui-btn mdui-btn-icon">
+            <i class="mdui-icon material-icons">refresh</i>
+        </a>
+        <a class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#more'}">
+            <i class="mdui-icon material-icons">more_vert</i>
+        </a>
+        <ul class="mdui-menu" id="more">
+            <li class="mdui-menu-item">
+                <a href="https://wj.qq.com/s2/10387062/c68d/" class="mdui-ripple" target="_Blank">反馈</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="javascript:" mdui-dialog="{target: '#about'}">关于</a>
+            </li>
+        </ul>
+        <div class="mdui-dialog" id="about">
+            <div class="mdui-dialog-title">关于</div>
+            <div class="mdui-dialog-content">Survival City UserSystem<br>version: 2.0.1_beta_220614<hr>Powered by <a href="https://lmceric.top" target="_blank">SimpleAstronaut</a><br>2022-6-13</div>
+            <div class="mdui-dialog-actions">
+                <button class="mdui-btn mdui-ripple" mdui-dialog-close>确定</button>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="mdui-container">
+    <br>
+    <div class="mdui-row">
+        <div class="mdui-col-md-6 mdui-col-offset-md-3">
+            <div class="mdui-card">
+                <div class="mdui-card-primary">
+                    <div class="mdui-card-primary-title mdui-text-center">注册</div>
+                </div>
+                <div class="mdui-card-content">
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">电子邮箱</label>
+                        <!--suppress HtmlFormInputWithoutLabel -->
+                        <input class="mdui-textfield-input" type="email" id="email"/>
+                    </div>
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">用户名</label>
+                        <!--suppress HtmlFormInputWithoutLabel -->
+                        <input class="mdui-textfield-input" type="text" id="username"/>
+                    </div>
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">密码</label>
+                        <!--suppress HtmlFormInputWithoutLabel -->
+                        <input class="mdui-textfield-input" type="password" id="password"/>
+                    </div>
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">确认密码</label>
+                        <!--suppress HtmlFormInputWithoutLabel -->
+                        <input class="mdui-textfield-input" type="password" id="repassword"/>
+                    </div>
+                    <br>
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-center" id="login" onclick="window.location = window.location.origin+'/login'">返回登录</button>
+                    <br>
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-center" id="signup" onclick="signup()" mdui-tooltip="{content: '暂未开放注册'}" disabled>注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
