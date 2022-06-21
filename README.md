@@ -1,0 +1,4 @@
+# survivalcity-usersystem
+Survivalcity服务器账户系统
+
+基于MCSManager和SimpleUserv2.0服务构建
