@@ -7,6 +7,8 @@
 const express = require('express');
 const { execFileSync } = require('child_process');
 const exStatic = require("express-static");
+const axios = require('axios');
+const {response} = require("express");
 
 let app = express();
 
@@ -39,6 +41,20 @@ app.get('/login', function(req, res){
 app.get('/signup', function(req, res){
     res.sendFile(__dirname+"/public"+"/signup.html")
     console.log("[INFO]["+Date()+"]["+req.ip.match(/\d+\.\d+\.\d+\.\d+/)+"]:SignUp page require")
+})
+
+app.get('/user/info', function(req,res){
+    const user_id = req.query.user_id;
+    const token = req.query.token;
+    axios.get('https://service-jzdhwuy1-1304083067.bj.apigw.tencentcs.com/release/getinfo?user_id='+user_id+'&token='+token).then(response =>{
+        res.send(response.data);
+    })
+    console.log("[INFO]["+Date()+"]["+req.ip.match(/\d+\.\d+\.\d+\.\d+/)+"]:Get UserInfo require");
+})
+
+app.get('/info', function(req, res){
+    res.sendFile(__dirname+"/public"+"/info.html");
+    console.log("[INFO]["+Date()+"]["+req.ip.match(/\d+\.\d+\.\d+\.\d+/)+"]:Info page require")
 })
 
 app.use(exStatic('./public'));

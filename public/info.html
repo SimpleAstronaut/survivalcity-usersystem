@@ -16,83 +16,6 @@
         inst.toggle();
     });
 </script>
-<script>
-    // noinspection SpellCheckingInspection
-    function getCookie(cname)
-    {
-        //get cookie function
-        //from www.runoob.com
-        let name = cname + "=";
-        let ca = document.cookie.split(';');
-        for(let i=0; i<ca.length; i++)
-        {
-            let c = ca[i].trim();
-            if (c.indexOf(name)===0) return c.substring(name.length,c.length);
-        }
-        return "";
-    }
-    let user_id = getCookie('user_id');
-    let token = getCookie('token');
-    console.log('test');
-    if(user_id === '' || token === '') {
-        //console.log(window.location);
-        console.log('login false');
-        console.log(window.location.href+'user/get');
-        alert('您尚未登录');
-        window.location.pathname = '/login';
-    }
-
-    window.onload = function(){
-        console.log('a');
-        $.get(window.location.origin+'/user/info', { user_id : user_id , token : token},function(data, status){
-            if(data === false){
-                console.log('login false');
-                console.log(window.location.href+'user/get');
-                alert('登录过期');
-                window.location.pathname = '/login';
-            }
-            else{
-                console.log(data);
-                let basicInfo = document.createElement('DIV');
-                basicInfo.className = 'mdui-card';
-
-                let basicInfoPrimary = document.createElement('DIV');
-                basicInfoPrimary.className = 'mdui-card-primary';
-
-                let usernameElement = document.createElement('DIV')
-                usernameElement.className = 'mdui-card-primary-title';
-                usernameElement.textContent = data.data.username;
-
-                let infoElement = document.createElement('LI');
-                infoElement.className = 'mdui-list-item mdui-ripple';
-                infoElement.textContent = '用户id: '+ data.data.user_id;
-
-                let mailElement = document.createElement('LI');
-                mailElement.className = 'mdui-list-item mdui-ripple';
-                mailElement.textContent = '电子邮箱地址: ' + data.data.mail;
-
-                let infoUl = document.createElement('UL');
-                infoUl.className = 'mdui-list';
-
-                infoUl.appendChild(infoElement);
-                infoUl.appendChild(mailElement);
-
-                basicInfoPrimary.appendChild(usernameElement);
-                basicInfo.appendChild(basicInfoPrimary);
-                basicInfo.appendChild(infoUl);
-
-                document.getElementById('app').innerHTML = '';
-                document.getElementById('app').appendChild(basicInfo);
-            }
-        })
-    }
-
-    function signOut(){
-        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        window.location.reload();
-    }
-</script>
 <header class="mdui-appbar">
     <div class="mdui-toolbar mdui-color-theme">
         <a class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#mode'}" id="toggle">
@@ -174,21 +97,6 @@
         <h3>加载中...</h3>
     </div>
     <br>
-    <div id="list">
-        <div class="mdui-card">
-            <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title">快捷入口</div>
-            </div>
-            <div class="mdui-card-content">
-                <ul class="mdui-list">
-                    <li class="mdui-list-item mdui-ripple" onclick="window.location.pathname = '/info'">个人中心</li>
-                    <li class="mdui-list-item mdui-ripple" onclick="window.location.pathname = '/server'">服务器状态</li>
-                    <li class="mdui-list-item mdui-ripple" onclick="window.location.pathname = '/docs'">文档中心</li>
-                    <li class="mdui-list-item mdui-ripple" onclick="window.location.pathname = '/report'">反馈</li>
-                </ul>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 </html>
